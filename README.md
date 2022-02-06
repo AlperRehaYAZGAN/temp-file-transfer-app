@@ -14,6 +14,9 @@
     <a href="https://go.dev/"><strong>Explore the Golang »</strong></a>
     <br />
     <br />
+    <a href="https://alya-temp-file.herokuapp.com/"><strong>Live Demo</strong></a>
+    <br />
+    <br />
   </p>
 </p>
 
@@ -45,7 +48,8 @@
 </details>
 
 ## About The Project
-
+This project aiming to create a simple temporary file trasnfer app for general purposes. With this app you could upload 
+file to service then retrieve from unique key for specific (1 minute) time validity. Demo app is listening on (https://alya-temp-file.herokuapp.com)
 . 
 
 ### Built With
