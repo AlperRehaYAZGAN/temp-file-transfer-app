@@ -4,15 +4,15 @@ RUN apk add build-base
 
 ADD . /src
 
-RUN cd /src && go build -o ./bin/myexeapp
+RUN cd /src && go build -o ./bin/temp-file-transfer-app
 
 # multi stage-> deploy stage
 FROM alpine
 
 WORKDIR /app
 
-COPY --from=build-env /src/bin/myexeapp /app/
+COPY --from=build-env /src/bin/temp-file-transfer-app /app/
 
 EXPOSE 9090
 
-ENTRYPOINT ./myexeapp
+ENTRYPOINT ./temp-file-transfer-app
