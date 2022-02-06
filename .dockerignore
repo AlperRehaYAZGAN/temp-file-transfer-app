@@ -1,0 +1,11 @@
+# enn
+.env
+
+# bin folder
+bin/*
+
+# uploads
+uploads/*
+
+# swagger
+docs/*
