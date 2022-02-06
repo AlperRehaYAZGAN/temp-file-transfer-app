@@ -49,8 +49,12 @@ func GetFileHandler(ctx *gin.Context) {
 
 	// get file from cache
 	filename, _ := store.Cache.Get(key)
-	// cast filename to string
-	filenameStr := filename.(string)
+
+	// cast filename to string if not nil
+	filenameStr := ""
+	if filename != nil {
+		filenameStr = filename.(string)
+	}
 
 	// check filename len > 2
 	if len(filenameStr) < 2 {
