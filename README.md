@@ -145,4 +145,4 @@ Project Link: [https://github.com/AlperRehaYAZGAN/temp-file-transfer-app](https:
 [issues-shield]: https://img.shields.io/github/issues/AlperRehaYAZGAN/temp-file-transfer-app.svg?style=for-the-badge
 [issues-url]: https://github.com/AlperRehaYAZGAN/temp-file-transfer-app/issues
 [license-shield]: https://img.shields.io/github/license/AlperRehaYAZGAN/temp-file-transfer-app.svg?style=for-the-badge
-[license-url]: https://github.com/AlperRehaYAZGAN/temp-file-transfer-app/blob/master/LICENSE.txt
+[license-url]: https://github.com/AlperRehaYAZGAN/temp-file-transfer-app/blob/master/LICENCE
