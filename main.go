@@ -24,7 +24,10 @@ func main() {
 	// r.POST("/upload-many", UploadMultipleFileHandler)
 
 	// start server
-	APP_PORT := "9090"
+	APP_PORT := os.Getenv("PORT")
+	if APP_PORT == "" {
+		APP_PORT = "9090"
+	}
 	if err := r.Run(":" + APP_PORT); err != nil {
 		log.Fatal(err)
 	}
