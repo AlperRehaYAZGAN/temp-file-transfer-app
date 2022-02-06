@@ -92,11 +92,11 @@ file to service then retrieve from unique key for specific (1 minute) time valid
    ```
 2. Build docker image:
    ```sh
-   docker build -t alperreha/tempfiletransfer:1.0.0
+   docker build -t alperreha/alya-temp-file:1.0.0
    ```
 3. Run Docker container:
    ```sh
-   docker run --name alya-temp-file -p 9090:9090 -d alperreha/tempfiletransfer:1.0.0
+   docker run --name alya-temp-file -p 9090:9090 -d alperreha/alya-temp-file:1.0.0
    ```
 
 ## Usage
