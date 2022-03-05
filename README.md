@@ -103,9 +103,10 @@ file to service then retrieve from unique key for specific (1 minute) time valid
 
 This simple app has a two endpoint to handle whole process. If we assert server is listening on 9090 port, example requests are:
 
-- GET / : HTML form for upload file  
-- GET /get/:file-id : Returns file by given file-id   
-- POST /upload-one : Form Data myfile for uploading file and returns file key to access  ,
+- GET / : HTML Home Page for upload file  
+- GET /f/:file-key : Returns file info page by file-uploaded-temp-key   
+- GET /api/:key/:filename : api get file by key
+- POST /api/:filename : Form Data myfile for uploading file and returns file key to access  
 
 ## Roadmap
 

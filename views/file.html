@@ -26,49 +26,25 @@
     <section class="section columns">
         <div class="column" style="margin: auto;"></div>
         <div class="column is-8">
-            <article class="message is-info">
-                <div class="message-header">
-                  <p>Usage</p>
-                  <button class="delete" aria-label="delete"></button>
-                </div>
-                <div class="message-body">
-                  You can easily use this app via Browsers. <br>
-                  <strong>Upload via cURL:</strong> <br>
-                  curl --upload-file ./filename.txt url (e.g. curl --upload-file ./hello.txt https://alya-temp-transfer.herokuapp.com/api/hello.txt) <br>
-                    <strong>Retrieve via cURL:</strong> <br>
-                    curl url (e.g. curl https://alya-temp-transfer.herokuapp.com/api/f-sadEsse/hello.txt) <br>
-
-                </div>
-              </article>
-          </div>
-          <div class="column" style="margin: auto;"></div>
-    </section>
-
-    <section class="columns">
-        <div class="column" style="margin: auto;"></div>
-        <div class="column is-8">
-            <form id="upload-form" enctype="multipart/form-data" action="/api/upload" method="post">
-                <div class="file has-name is-boxed is-centered">
+                <div id="download-file"  class="file has-name is-boxed is-centered">
                 <label class="file-label">
-                  <input class="file-input" type="file" name="myfile">
+                  <span id="file-name" class="file-name">
+                    {{ .filename }}
+                  </span>
+                  <span id="file-key" class="file-name">
+                    <!-- key if exist -->
+                    {{ .key }}
+                  </span>
                   <span class="file-cta">
                     <span class="file-icon">
-                      <i class="fas fa-upload"></i>
+                      <i class="fas fa-download"></i>
                     </span>
                     <span class="file-label">
-                      Choose a file…
+                        Download
                     </span>
                   </span>
-                  <span class="file-name">
-                    ...
-                  </span>
-                  <span class="file-name">
-                    <button class="button is-info" type="submit">Upload</button>
-                  </span>
                 </label>
-
               </div>
-            </form>
             
         </div>
         <div class="column" style="margin: auto;"></div>
@@ -124,15 +100,17 @@
     </footer>
 
     <script>
-        const fileInput = document.querySelector('#upload-form input[type=file]');
-        fileInput.onchange = () => {
-          if (fileInput.files.length > 0) {
-            const fileName = document.querySelector('#upload-form .file-name');
-            fileName.textContent = fileInput.files[0].name;
-          }
-          // set form action url like HOST/api/{fileName}
-          document.querySelector('#upload-form').action = `${document.location.origin}/api/${fileInput.files[0].name}`;
-        }
+      // open file in new tab if clicked download-file id area
+      document.getElementById("download-file").addEventListener("click", function() {
+        var fileName = document.getElementById("file-name").innerHTML;
+        var fileKey = document.getElementById("file-key").innerHTML;
+        // trim spaces
+        fileName = fileName.replace(/\s/g, '');
+        fileKey = fileKey.replace(/\s/g, '');
+        var url = "/api/" + fileKey + "/" + fileName;
+        window.open(url, '_blank');
+      });
+
       </script>
 </body>
 
