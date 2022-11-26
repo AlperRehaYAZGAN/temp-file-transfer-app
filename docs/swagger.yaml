@@ -1,0 +1,88 @@
+basePath: /api/v1
+definitions:
+  handlers.RespondJson:
+    properties:
+      intent:
+        type: string
+      message: {}
+      status:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: 'alya.temp-file.upload-service : microservice for temporary upload
+    and retrieve file operations.'
+  title: Temp File Upload Service API
+  version: 1.0.0
+paths:
+  /f/{code}:
+    get:
+      consumes:
+      - '*/*'
+      description: retrieve uploaded file by temp code
+      parameters:
+      - description: code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - '*/*'
+      responses:
+        "200":
+          description: file itself
+          schema:
+            type: string
+        "404":
+          description: File expired or not found
+          schema:
+            $ref: '#/definitions/handlers.RespondJson'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.RespondJson'
+      summary: retrieve uploaded file by temp code
+      tags:
+      - Upload
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: upload temporary file
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - '*/*'
+      responses:
+        "200":
+          description: uploaded file temp code
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.RespondJson'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.RespondJson'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.RespondJson'
+      summary: upload temporary file
+      tags:
+      - Upload
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

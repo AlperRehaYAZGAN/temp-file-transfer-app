@@ -1,1 +1,1 @@
-web: bin/temp-file-transfer-app
+web: ./temp-file-transfer-app

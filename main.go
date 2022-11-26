@@ -2,192 +2,84 @@ package main
 
 import (
 	"log"
-	"math/rand"
-	"net/http"
 	"os"
 	"time"
 
-	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
+
+	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/config"
+	docs "github.com/AlperRehaYAZGAN/temp-file-transfer-app/docs"
+	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/handlers"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// App current working directory
-var pwd string
+// Path: temp-upload-service
+// @Title Temp File Upload Service API
+// @Description alya.temp-file.upload-service : microservice for temporary upload and retrieve file operations.
+// @Version 1.0.0
+// @Schemes http https
+// @BasePath /api/v1
 
-var store = persistence.NewInMemoryStore(time.Minute * 5)
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
+const (
+	// server name
+	APP_NAME = "alya.temp-file.upload-service"
+	// server description
+	APP_DESCRIPTION = "alya.temp-file.upload-service : microservice for temporary upload and retrieve file operations."
+)
 
 func main() {
-	// get current working directory
-	pwd, _ = os.Getwd()
-
-	r := gin.New()
-	r.MaxMultipartMemory = 8 << 20 // 8 MiB
-
-	r.Static("/static", pwd+"/static")
-	r.LoadHTMLFiles(pwd+"/views/index.html", pwd+"/views/file.html")
-
-	// Group ui routes
-	ui := r.Group("/")
-	{
-		ui.GET("/", HomePageHandler)                  // home page
-		ui.GET("/f/:filename", GetFileByKeyUIHandler) // try to get file by normal
+	// parse application envs
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal("INIT: Cannot get current working directory os.Getwd()")
 	}
+	config.ReadConfig(dir)
+	config.Pwd = dir
 
-	// Group api routes
-	api := r.Group("/api")
-	{
-		api.GET("/:key/:filename", GetFileByKeyHandler) // try to get file with key
-		api.POST("/:filename", UploadOneFileHandler)    // upload one files
-		api.PUT("/:filename", UploadOneFileHandler)     // upload one files
+	// init env
+	env := config.C.App.Env
+	port := config.C.App.Port
+	// log env and port like "alya.temp-file.upload-service env: dev, port: 9097"
+	log.Printf("INIT: %s env: %s, port: %s", APP_NAME, env, port)
+
+	// create 3th party connections
+	inAppCache := NewInAppCacheStore(time.Minute)
+
+	// create application service
+	uploadsvc := handlers.NewUploadService(
+		inAppCache,
+	)
+
+	// check env and set gin mode
+	gin.SetMode(gin.ReleaseMode)
+	if env == "prod" || env == "production" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
 	}
+	router := gin.New()
+	router.Use(gin.Recovery())
+	uploadsvc.InitRouter(router)
+	uploadsvc.InitUploadsOldFileCleaner()
+
+	// check env and set swagger
+	// if !(env == "prod" || env == "production") {
+	docs.SwaggerInfo.BasePath = "/api/v1/"
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	// }
 
 	// start server
-	APP_PORT := os.Getenv("PORT")
-	if APP_PORT == "" {
-		APP_PORT = "9090"
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "9090"
 	}
-	if err := r.Run(":" + APP_PORT); err != nil {
-		log.Fatal(err)
-	}
-}
+	log.Println("INIT: Application " + APP_NAME + " started on port " + port)
 
-// HomePageHandler is a home page handler
-func HomePageHandler(ctx *gin.Context) {
-	ctx.File(pwd + "/views/index.html")
-}
-
-// GetFileByKeyUIHandler is a key protected file display ui handler
-func GetFileByKeyUIHandler(ctx *gin.Context) {
-	// 1 - get filename from param, key from query
-	filename := ctx.Param("filename")
-	key := ctx.Query("key")
-
-	// 5 - render template with data
-	ctx.HTML(http.StatusOK, "file.html", gin.H{
-		"filename": filename,
-		"key":      key,
-	})
-}
-
-func GetFileByKeyHandler(ctx *gin.Context) {
-	key := ctx.Param("key")
-	if key == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "key not found",
-		})
-		return
-	}
-
-	// get file from cache
-	filename, _ := store.Cache.Get(key)
-
-	// cast filename to string if not nil
-	filenameStr := ""
-	if filename != nil {
-		filenameStr = filename.(string)
-	}
-
-	// check filename len > 3
-	if len(filenameStr) < 3 {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "key not found",
-		})
-		return
-	}
-
-	// check file exists
-	if _, err := os.Stat("uploads/" + filenameStr); os.IsNotExist(err) {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"message": "key not found",
-		})
-		return
-	}
-
-	// read and return file from /uploads folder
-	ctx.File("uploads/" + filenameStr)
-}
-
-func UploadOneFileHandler(ctx *gin.Context) {
-	// get current requested hostname and scheme (http/https)
-	hostname := ctx.Request.Host
-	scheme := "http"
-	if ctx.Request.TLS != nil {
-		scheme = "https"
-	}
-	// get file from request
-	filename := ctx.Param("filename")
-	// Multipart form
-	file, _ := ctx.FormFile("myfile")
-
-	// check file
-	if file == nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "file not found",
-		})
-		return
-	}
-
-	err := ctx.SaveUploadedFile(file, "uploads/"+filename)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// cache file with random key
-	key := "f-" + GenerateRandomString(6)
-	store.Set(key, file.Filename, time.Minute*1)
-
-	// return json response
-	ctx.JSON(http.StatusOK, gin.H{
-		"status":         true,
-		"type":           "upload-one",
-		"file_real_name": file.Filename,
-		"file_save_name": filename,
-		"key":            key,
-		"api_url":        "" + scheme + "://" + hostname + "/api/" + key + "/" + filename,
-		"ui_url":         "" + scheme + "://" + hostname + "/f/" + filename + "?key=" + key,
-	})
-	return // return
-}
-
-func UploadMultipleFileHandler(ctx *gin.Context) {
-	// Multipart form
-	form, _ := ctx.MultipartForm()
-	files := form.File["myfile"]
-
-	// check file
-	if len(files) == 0 {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "file not found",
-		})
-		return
-	}
-
-	// uploaded_filenames
-	uploaded_filenames := make([]string, len(files))
-
-	for _, file := range files {
-		log.Println(file.Filename)
-		err := ctx.SaveUploadedFile(file, "uploads/"+file.Filename)
-		if err != nil {
-			log.Fatal(err)
-		}
-		uploaded_filenames = append(uploaded_filenames, file.Filename)
-	}
-
-	// return json response
-	ctx.JSON(http.StatusOK, gin.H{
-		"status": true,
-		"type":   "",
-		"files":  uploaded_filenames,
-	})
-	return // return
-}
-
-func GenerateRandomString(n int) string {
-	var letter = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letter[rand.Intn(len(letter))]
-	}
-	return string(b)
+	// fatal if error
+	log.Fatal(router.Run(":" + port))
 }
