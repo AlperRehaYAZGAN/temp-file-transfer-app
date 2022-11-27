@@ -13,6 +13,8 @@ WORKDIR /app
 
 COPY --from=build-env /src/bin/temp-file-transfer-app /app/
 
+RUN mkdir /app/uploads
+
 EXPOSE 9090
 
 ENTRYPOINT ./temp-file-transfer-app
