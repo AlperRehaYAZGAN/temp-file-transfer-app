@@ -54,12 +54,13 @@ func respondJson(ctx *gin.Context, code int, intent string, message interface{},
 func (us *UploadService) InitRouter(r *gin.Engine) {
 	// -- upload-file routes (group)
 
+	// set public folder
+	r.Static("/public", "./public")
+
 	// ui routes
-	/*
-		ui := r.Group("/")
-		ui.GET("/", us.HandleUiIndex)
-		ui.GET("/f/:filename", us.HandleUiGetFileByName)
-	*/
+	ui := r.Group("/")
+	ui.GET("/", us.HandleUiIndex)
+	// ui.GET("/f/:filename", us.HandleUiGetFileByName)
 
 	// api routes
 

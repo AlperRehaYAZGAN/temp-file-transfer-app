@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>alya - temp file transfer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <!-- Create simple dark color w/2 centered container. -->
+    <div class="bg-gray-900 min-h-screen flex flex-col justify-center items-center">
+
+        <!-- Circle upload icon and selected file options to get file from user -->
+        <div class="bg-gray-800 rounded-lg p-4 mt-4">
+
+            <!-- Upload icon, title and description -->
+            <div class="flex flex-col justify-center items-center">
+                <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2a6 6 0 110 12 6 6 0 010-12zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4zm0 2a.5.5 0 100 1 .5.5 0 000-1z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <h1 class="text-2xl text-gray-400">alya</h1>
+                <p class="text-gray-400">temp file transfer</p>
+            </div>
+
+            <!-- Button for upload or drag and drop file. And upload status at the bottom -->
+            <div class="flex flex-col justify-center items-center mt-4">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" class="hidden" />
+                    <label for="file" class="cursor-pointer">
+                        <div class="bg-gray-700 rounded-lg p-4">
+                            <p class="text-gray-400">Drag and drop file here or click to upload</p>
+                            <!-- centered Plus icon and "Upload" text at the bottom -->
+                            <div class="flex flex-row justify-center items-center mt-4">
+                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2a6 6 0 110 12 6 6 0 010-12zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4zm0 2a.5.5 0 100 1 .5.5 0 000-1z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <p class="text-gray-400 ml-2">Select File</p>
+                            </div>
+                        </div>
+                    </label>
+                    <!-- Centered blue submit button -->
+                    <div class="flex justify-center mt-4">
+                        <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
