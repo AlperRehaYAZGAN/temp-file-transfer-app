@@ -49,4 +49,9 @@ func ReadConfig(processCwdir string) {
 		Config.App.UploadsDir = "uploads"
 	}
 
+	// if ../uploads not exist create it
+	if _, err := os.Stat(processCwdir + "/" + Config.App.UploadsDir); os.IsNotExist(err) {
+		os.Mkdir(processCwdir+"/"+Config.App.UploadsDir, 0777)
+	}
+
 }
