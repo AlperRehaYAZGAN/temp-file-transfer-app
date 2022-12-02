@@ -14,7 +14,7 @@
     <a href="https://go.dev/"><strong>Explore the Golang »</strong></a>
     <br />
     <br />
-    <a href="https://alya-temp-file.herokuapp.com/"><strong>Live Demo</strong></a>
+    <a href="https://tempft.herokuapp.com/"><strong>Live Demo</strong> at https://tempft.herokuapp.com</a>
     <br />
     <br />
   </p>
