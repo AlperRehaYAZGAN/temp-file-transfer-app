@@ -10,6 +10,7 @@ import (
 	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/config"
 	docs "github.com/AlperRehaYAZGAN/temp-file-transfer-app/docs"
 	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/handlers"
+	plugins "github.com/AlperRehaYAZGAN/temp-file-transfer-app/plugins"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -48,7 +49,7 @@ func main() {
 	log.Printf("INIT: %s env: %s, port: %s", APP_NAME, env, port)
 
 	// create 3th party connections
-	inAppCache := NewInAppCacheStore(time.Minute)
+	inAppCache := plugins.NewInAppCacheStore(time.Minute)
 
 	// create application service
 	uploadsvc := handlers.NewUploadService(
