@@ -10,8 +10,8 @@ definitions:
     type: object
 info:
   contact: {}
-  description: 'alya.temp-file.upload-service : microservice for temporary upload
-    and retrieve file operations.'
+  description: 'ykt.temp-file.upload-service : microservice for temporary upload and
+    retrieve file operations.'
   title: Temp File Upload Service API
   version: 1.0.0
 paths:

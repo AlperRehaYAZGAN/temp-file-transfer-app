@@ -11,6 +11,7 @@ FROM alpine
 
 WORKDIR /app
 
+COPY --from=build-env /src/docs /app/docs
 COPY --from=build-env /src/bin/temp-file-transfer-app /app/
 
 RUN mkdir /app/uploads

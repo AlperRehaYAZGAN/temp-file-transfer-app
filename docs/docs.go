@@ -141,7 +141,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http", "https"},
 	Title:            "Temp File Upload Service API",
-	Description:      "alya.temp-file.upload-service : microservice for temporary upload and retrieve file operations.",
+	Description:      "ykt.temp-file.upload-service : microservice for temporary upload and retrieve file operations.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
