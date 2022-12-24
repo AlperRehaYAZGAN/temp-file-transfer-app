@@ -1,0 +1,23 @@
+# This is the simple docker-compose yaml for redis, nats.io.
+version: '3.7'
+
+services:
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./volumes/redis/data:/data
+    restart: always
+  nats:
+    image: nats:2.9.3-scratch
+    container_name: nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - ./volumes/nats/data:/data
+    restart: always
+    # enable nats jetstream
+    command: --js

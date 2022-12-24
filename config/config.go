@@ -21,12 +21,12 @@ type config struct {
 var C config
 var Pwd string
 
-func ReadConfig(processCwdir string) {
+func ReadConfig(processCwdir string, fileprefix string) {
 	Config := &C
 
 	// if .env.yaml exist read it
-	if _, err := os.Stat(processCwdir + "/config" + "/.env.yaml"); err == nil {
-		viper.SetConfigName(".env")
+	if _, err := os.Stat(processCwdir + "/config/" + fileprefix + ".env.yaml"); err == nil {
+		viper.SetConfigName(fileprefix + ".env")
 		viper.SetConfigType("yaml")
 		viper.AddConfigPath(filepath.Join(processCwdir, "config"))
 		viper.AutomaticEnv()

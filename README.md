@@ -49,7 +49,7 @@
 
 ## About The Project
 This project aiming to create a simple temporary file trasnfer app for general purposes. With this app you could upload 
-file to service then retrieve from unique key for specific (1 minute) time validity. Demo app is listening on (https://alya-temp-file.herokuapp.com)
+file to service then retrieve from unique key for specific (1 minute) time validity. Demo app is listening on (https://ykt-temp-file.herokuapp.com)
 . 
 
 ### Built With
@@ -92,11 +92,11 @@ file to service then retrieve from unique key for specific (1 minute) time valid
    ```
 2. Build docker image:
    ```sh
-   docker build -t alperreha/alya-temp-file:1.0.0
+   docker build -t alperreha/ykt-temp-file:1.0.0
    ```
 3. Run Docker container:
    ```sh
-   docker run --name alya-temp-file -p 9090:9090 -d alperreha/alya-temp-file:1.0.0
+   docker run --name ykt-temp-file -p 9090:9090 -d alperreha/ykt-temp-file:1.0.0
    ```
 
 ## Usage

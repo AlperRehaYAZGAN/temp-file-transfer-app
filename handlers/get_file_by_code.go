@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/config"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +22,7 @@ import (
 // @Failure 500 {object} handlers.RespondJson "Internal Server Error"
 // @Router /f/{code} [get]
 func (us *UploadService) HandleGetFileByCode(c *gin.Context) {
-	endpointUrn := "alya:::tempfileupload:::/f/{code}"
+	endpointUrn := "ykt:::tempfileupload:::/f/{code}"
 	code := c.Param("code")
 
 	// cache key
@@ -29,8 +30,7 @@ func (us *UploadService) HandleGetFileByCode(c *gin.Context) {
 
 	// get filename from from cache if key is valid
 	var filename string
-
-	err := us.inAppCache.Get(key, &filename)
+	err := CacheGet(us.inAppCache, key, &filename)
 	if err != nil {
 		respondJson(c, http.StatusNotFound, endpointUrn, "File expired or not found", nil)
 		return
@@ -47,4 +47,8 @@ func (us *UploadService) HandleGetFileByCode(c *gin.Context) {
 	// read and return file from /uploads folder; set filename as header
 	c.Header("Content-Disposition", "attachment; filename="+filename)
 	c.File(path)
+}
+
+func CacheGet(inAppCache *persistence.InMemoryStore, key string, dest interface{}) error {
+	return inAppCache.Get(key, dest)
 }

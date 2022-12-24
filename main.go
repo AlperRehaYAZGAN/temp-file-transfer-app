@@ -17,7 +17,7 @@ import (
 
 // Path: temp-upload-service
 // @Title Temp File Upload Service API
-// @Description alya.temp-file.upload-service : microservice for temporary upload and retrieve file operations.
+// @Description ykt.temp-file.upload-service : microservice for temporary upload and retrieve file operations.
 // @Version 1.0.0
 // @Schemes http https
 // @BasePath /api/v1
@@ -28,9 +28,9 @@ import (
 
 const (
 	// server name
-	APP_NAME = "alya.temp-file.upload-service"
+	APP_NAME = "ykt.temp-file.upload-service"
 	// server description
-	APP_DESCRIPTION = "alya.temp-file.upload-service : microservice for temporary upload and retrieve file operations."
+	APP_DESCRIPTION = "ykt.temp-file.upload-service : microservice for temporary upload and retrieve file operations."
 )
 
 func main() {
@@ -39,13 +39,13 @@ func main() {
 	if err != nil {
 		log.Fatal("INIT: Cannot get current working directory os.Getwd()")
 	}
-	config.ReadConfig(dir)
+	config.ReadConfig(dir, "")
 	config.Pwd = dir
 
 	// init env
 	env := config.C.App.Env
 	port := config.C.App.Port
-	// log env and port like "alya.temp-file.upload-service env: dev, port: 9097"
+	// log env and port like "ykt.temp-file.upload-service env: dev, port: 9097"
 	log.Printf("INIT: %s env: %s, port: %s", APP_NAME, env, port)
 
 	// create 3th party connections
@@ -65,7 +65,7 @@ func main() {
 	}
 	router := gin.New()
 	router.Use(gin.Recovery())
-	uploadsvc.InitRouter(router)
+	router = uploadsvc.InitRouter(router)
 	uploadsvc.InitUploadsOldFileCleaner()
 
 	// check env and set swagger

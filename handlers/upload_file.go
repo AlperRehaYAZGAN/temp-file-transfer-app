@@ -8,6 +8,7 @@ import (
 
 	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/config"
 	"github.com/AlperRehaYAZGAN/temp-file-transfer-app/utils"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,6 +38,14 @@ func (us *UploadService) HandleUploadFile(ctx *gin.Context) (int, interface{}, e
 		return http.StatusUnprocessableEntity, nil, errors.New("file size must be less than 10MB")
 	}
 
+	// if file .exe dont allow
+	// check filename length for .exe
+	if len(file.Filename) > 4 {
+		if file.Filename[len(file.Filename)-4:] == ".exe" {
+			return http.StatusTeapot, nil, errors.New("file type not allowed")
+		}
+	}
+
 	// generate random filename and save
 	random := utils.GenerateRandomDigitString(8)
 	to := config.Pwd + "/" + config.C.App.UploadsDir + "/" + random
@@ -49,11 +58,16 @@ func (us *UploadService) HandleUploadFile(ctx *gin.Context) (int, interface{}, e
 	// generate key and save to cache
 	key := CACHE_NS + ":" + random
 	// cache file with random key
-	err = us.inAppCache.Set(key, file.Filename, time.Minute)
+	// err = us.inAppCache.Set(key, file.Filename, time.Minute)
+	err = CacheSet(us.inAppCache, key, file.Filename, time.Minute)
 	if err != nil {
 		log.Println("Error while caching file: ", err)
 		return http.StatusInternalServerError, nil, errors.New("error while caching file")
 	}
 
 	return http.StatusOK, random, nil
+}
+
+func CacheSet(inAppCache *persistence.InMemoryStore, key string, value interface{}, expiration time.Duration) error {
+	return inAppCache.Set(key, value, expiration)
 }

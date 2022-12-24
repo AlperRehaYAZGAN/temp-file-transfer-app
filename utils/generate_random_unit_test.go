@@ -14,4 +14,10 @@ func TestGenerateRandomDigitString(t *testing.T) {
 		t.Errorf("random string length is not equal to length")
 	}
 
+	// test all characters are digits
+	for _, char := range randomString {
+		if char < '0' || char > '9' {
+			t.Errorf("random string contains non-digit character")
+		}
+	}
 }

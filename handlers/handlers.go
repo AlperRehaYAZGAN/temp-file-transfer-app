@@ -13,7 +13,7 @@ import (
 
 const (
 	MAX_FILE_SIZE = 1024 * 1024 * 10 // 10MB
-	CACHE_NS      = "alya"
+	CACHE_NS      = "ykt"
 )
 
 // UploadService is a struct for auth core
@@ -35,6 +35,10 @@ type RespondJson struct {
 	Message interface{} `json:"message"`
 }
 
+func RespondJsonCall(ctx *gin.Context, code int, intent string, message interface{}, err error) {
+	respondJson(ctx, code, intent, message, err)
+}
+
 func respondJson(ctx *gin.Context, code int, intent string, message interface{}, err error) {
 	if err == nil {
 		ctx.JSON(code, RespondJson{
@@ -51,11 +55,18 @@ func respondJson(ctx *gin.Context, code int, intent string, message interface{},
 	}
 }
 
-func (us *UploadService) InitRouter(r *gin.Engine) {
+func (us *UploadService) InitRouter(r *gin.Engine) *gin.Engine {
 	// -- upload-file routes (group)
 
 	// set public folder
 	r.Static("/public", "./public")
+
+	// ping for r
+	r.GET("/ping", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
 	// ui routes
 	ui := r.Group("/")
@@ -70,9 +81,10 @@ func (us *UploadService) InitRouter(r *gin.Engine) {
 	// upload file (one per request)
 	api.POST("/upload", func(ctx *gin.Context) {
 		code, data, err := us.HandleUploadFile(ctx)
-		respondJson(ctx, code, "alya:::tempfileupload:::/upload", data, err)
+		respondJson(ctx, code, "ykt:::tempfileupload:::/upload", data, err)
 	})
 
+	return r
 }
 
 func (us *UploadService) InitUploadsOldFileCleaner() {

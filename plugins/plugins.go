@@ -1,12 +1,58 @@
-package main
+package plugins
 
 import (
+	"context"
+	"log"
+	"strconv"
 	"strings"
 	"time"
+
+	// cache
+	"github.com/go-redis/redis/v8"
+
+	// nats
+	"github.com/nats-io/nats.go"
 
 	// in-app-cache
 	"github.com/gin-contrib/cache/persistence"
 )
+
+func NewRedisCacheConnection(redisUrl string) (*redis.Client, context.Context) {
+	// parse redis url to username password and host and port and db
+	// redis://username:password@host:port/db
+	_, username, password, host, port, db := UrlStringToOptions(redisUrl)
+	// convert db to int
+	dbInt, err := strconv.Atoi(db)
+	if err != nil {
+		log.Fatalln("Redis db option is not a number: ", err)
+	}
+
+	rContext := context.Background()
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     host + ":" + port,
+		Username: username,
+		Password: password,
+		DB:       dbInt,
+	})
+	// ping redis for check connection
+	_, err = rdb.Ping(rContext).Result()
+	if err != nil {
+		log.Fatalln("Redis initial conn error: ", err)
+	}
+	return rdb, rContext
+}
+
+func NewNATSConnection(natsUrl string) *nats.Conn {
+	_, username, password, host, port, _ := UrlStringToOptions(natsUrl)
+
+	// create nats connection
+	nc, err := nats.Connect(host+":"+port, nats.UserInfo(username, password))
+	if err != nil {
+		log.Fatalln("NATS initial conn error: ", err)
+	}
+
+	return nc
+}
 
 func NewInAppCacheStore(defaultTTL time.Duration) *persistence.InMemoryStore {
 	return persistence.NewInMemoryStore(defaultTTL)
