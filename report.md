@@ -423,6 +423,12 @@ func TestReadFile(t *testing.T) {
 <pre>
 ## Integration Test - Uzak Önbellek Veri Yazma
 
+// sequence diagram
+title TestNewRedisCacheSet
+OurApp->Redis: Data (Set)
+Redis->Redis: Sets data 
+Redis->OurApp: Return true or false
+
 | - | Açıklama |
 | --- | --- |
 | **Test** | Uzak Önbellek Veri Yazma |
@@ -459,6 +465,12 @@ func TestNewRedisCacheSet(t *testing.T) {
 
 <pre>
 ## Integration Test - Uzak Önbellek Veri Okuma
+
+// sequence diagram
+title TestNewRedisCacheGet
+OurApp->Redis: Key (Get)
+Redis->Redis: Gets data 
+Redis->OurApp: Return data or null
 
 | - | Açıklama |
 | --- | --- |
@@ -511,6 +523,12 @@ func TestNewRedisCacheGet(t *testing.T) {
 <pre>
 ## Sistem Testleri - Uygulama Canlılığı
 
+// sequence diagram
+title TestApplicationLiveness
+TestTool->TestTool: Start
+TestTool->OurApp: ping
+OurApp->TestTool: return 200 or error
+
 | - | Açıklama |
 | --- | --- |
 | **Test** | Uygulama Canlılığı |
@@ -555,6 +573,12 @@ func TestApplicationLiveness(t *testing.T) {
 
 <pre>
 ## Sistem Testleri - Uygulama Dosya Yükleme
+
+// sequence diagram
+title TestUploadFileToServer
+TestTool->TestTool: Find a file to upload
+TestTool->OurApp: upload file
+OurApp->TestTool: return ok or error
 
 | - | Açıklama |
 | --- | --- |
@@ -653,6 +677,14 @@ func TestUploadFileToServer(t *testing.T) {
 <pre>
 ## Sistem Testleri - Uygulama Dosya Getirme
 
+
+// sequence diagram
+title TestGetUploadedFile
+TestTool->TestTool: Find file key
+TestTool->OurApp: send key
+OurApp->OurApp: find file by key
+OurApp->TestTool: return file or error
+
 | - | Açıklama |
 | --- | --- |
 | **Test** | Uygulama Dosya Getirme |
@@ -697,6 +729,13 @@ func TestGetUploadedFile(t *testing.T) {
 
 ## Regresyon Testleri
 
+
+// sequence diagram
+title TestUploadLargeFileToServer
+TestTool->TestTool: Find large file
+TestTool->OurApp: send large file
+OurApp->OurApp: check file size
+OurApp->TestTool: return error
 
 <pre>
 ## Regresyon Testleri - Yüksek Boyutlu Dosya Yükleme
@@ -773,6 +812,14 @@ func TestUploadLargeFileToServer(t *testing.T) {
 
 <pre>
 ## Regresyon Testleri - .exe Dosya Yükleme
+
+// sequence diagram
+title TestUploadExeFileToServer
+TestTool->TestTool: Find .exe file
+TestTool->OurApp: send .exe file
+OurApp->OurApp: check file extension
+OurApp->TestTool: return error
+
 
 | - | Açıklama |
 | --- | --- |
