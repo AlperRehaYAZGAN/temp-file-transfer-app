@@ -8,13 +8,17 @@
 
 | - | Açıklama |
 | --- | --- |
-| **Test Adı** | `TestReadConfig` servis metodunun doğru bir şekilde çalışıp çalışmadığını test etmek |
+| **Test** | Config Dosyası Okuma |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu |
+| **Test Adı** | `TestReadConfig` |
 | **Test Açıklama** | `ReadConfig` servis metodunun doğru bir şekilde çalışıp çalışmadığını test etmek |
 | **Test Amacı** | Servis metodunu çağırıp, yapılandırma değerlerini almak ve beklenen değerlerle karşılaştırmak |
 | **Test Adımlar** | Çalışma dizininin yolu, "sample-test" yapılandırma dosyasının ismi |
 | **Test Girdileri** | Config dosya yolu |
 | **Test Çıktıları** | Servis metodunun beklenen yapılandırma değerlerini döndürdüğü |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>  
 
 ```go
@@ -58,17 +62,21 @@ func TestReadConfig(t *testing.T) {
 
 
 <pre>
-#### Unit Test - Rasgele Yazı Üretme Testi
+#### Unit Test - Rastgele Yazı Üretme Testi
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Rastgele Yazı Üretme Testi |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu |
 | **Test Adı** | `TestGenerateRandomDigitString` |
 | **Test Açıklama** | `GenerateRandomDigitString` fonksiyonunun rastgele bir basamaklı string üretebildiğini ve bu stringin tüm karakterlerinin basamak olup olmadığını test etmek |
 | **Test Amacı** | String uzunluğunu ve tüm karakterlerin basamak olup olmadığını kontrol etmek |
 | **Test Adımlar** | Belirtilen string uzunluğunu üretmek ve stringin tüm karakterlerinin basamak olup olmadığını kontrol etmek |
 | **Test Girdileri** | String uzunluğu |
 | **Test Çıktıları** | Üretilen stringin doğru uzunlukta ve tüm karakterlerinin basamak olduğu |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>  
 
 ```go
@@ -95,13 +103,17 @@ func TestGenerateRandomDigitString(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Önbellek Veri Yazma |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu, Önbellek Servisi |
 | **Test Adı** | `TestCacheSet` |
 | **Test Açıklama** | `CacheSet` fonksiyonunun belirtilen anahtar, değer ve süre ile önbellekte bir veri ekleyebildiğini test etmek |
 | **Test Amacı** | Önbellekte bir veri ekleyebilme ve hata döndürmeme |
 | **Test Adımlar** | Önbellek oluşturulur, `CacheSet` fonksiyonu çağrılır ve ekleme işleminin hata döndürmemesi kontrol edilir |
 | **Test Girdileri** | Önbellek, anahtar, değer, süre |
 | **Test Çıktıları** | Önbellekte veri eklendiği ve hata döndürülmediği |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>  
 
 
@@ -131,18 +143,20 @@ func TestCacheSet(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Önbellek Veri Okuma |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu, Önbellek Servisi |
 | **Test Adı** | `TestCacheGet` |
 | **Test Açıklama** | `CacheGet` fonksiyonunun önbellekteki bir veriyi alabildiğini test etmek |
 | **Test Amacı** | Önbellekteki bir veriyi alabilme ve hata döndürmeme |
 | **Test Adımlar** | Önbellek oluşturulur, `CacheSet` fonksiyonu çağrılır, `CacheGet` fonksiyonu çağrılır ve alınan değerin beklenen değerle aynı olduğu kontrol edilir |
 | **Test Girdileri** | Önbellek, anahtar |
 | **Test Çıktıları** | Önbellekteki veri alındığı ve hata döndürülmediği |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
     
 ```go
-
 func TestCacheGet(t *testing.T) {
 	// create memory cache
 	inAppCache := persistence.NewInMemoryStore(time.Minute)
@@ -179,14 +193,17 @@ func TestCacheGet(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Önbellek Eskimemiş Veri Okuma |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu, Önbellek Servisi |
 | **Test Adı** | `TestCacheGetWithTTLSuccess` |
 | **Test Açıklama** | `CacheGet` fonksiyonunun önbellekteki bir verinin süresi dolmadan öncede alabildiğini test etmek |
 | **Test Amacı** | Önbellekteki bir verinin süresi dolmadan öncede alabilme ve hata döndürmeme |
 | **Test Adımlar** | Önbellek oluşturulur, `CacheSet` fonksiyonu çağrılır, `CacheGet` fonksiyonu çağrılır ve alınan değerin beklenen değerle aynı olduğu kontrol edilir |
 | **Test Girdileri** | Önbellek, anahtar, değer, süre |
 | **Test Çıktıları** | Önbellekteki veri alındığı ve hata döndürülmediği |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
     
 ```go
@@ -226,14 +243,17 @@ func TestCacheGetWithTTLSuccess(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Önbellek Eskimiş Veri Okuma |
+| **Test Türü** | Birim Test |
+| **Test Domain** | Uygulama Sunucusu, Önbellek Servisi |
 | **Test Adı** | `TestCacheGetWithTTLExpired` |
 | **Test Açıklama** | `CacheGet` fonksiyonunun önbellekteki bir verinin süresi dolmuş olması durumunda hata döndürdüğünü test etmek |
 | **Test Amacı** | Önbellekteki bir verinin süresi dolmuş olması durumunda hata döndürme |
 | **Test Adımlar** | Önbellek oluşturulur, `CacheSet` fonksiyonu çağrılır, sürenin dolması için beklenir, `CacheGet` fonksiyonu çağrılır ve hata döndürmesi ve alınan değerin beklenen değerle aynı olmaması kontrol edilir |
 | **Test Girdileri** | Önbellek, anahtar, değer, süre |
 | **Test Çıktıları** | Önbellekteki veri alınamaması ve hata döndürülmes
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
     
 ```go
@@ -282,13 +302,17 @@ OS->OurApp: Return error or null
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | OS Dosya Yazma |
+| **Test Türü** | Entegrasyon Test |
+| **Test Domain** | Uygulama Sunucusu, İşletim Sistemi |
 | **Test Adı** | `TestWriteFile` |
 | **Test Açıklama** | `WriteFile` fonksiyonunun dosya oluşturup yazma işlemlerinin doğru bir şekilde yapıldığını test etmek |
 | **Test Amacı** | Dosya oluşturup yazma işlemlerinin doğru bir şekilde yapılıp yapılmadığını kontrol etmek |
 | **Test Adımlar** | Çalışma dizininin yolu, dosya oluşturulur, dosyaya yazma işlemi yapılır, dosya kapatılır, dosyanın varlığı kontrol edilir, dosya silinir |
 | **Test Girdileri** | Dosya yolu, dosya adı, yazılacak değer |
 | **Test Çıktıları** | Dosya oluşturulması, yazma işleminin doğru bir şekilde yapılması, dosyanın varlığının kontrol edilmesi, dosyanın silinmesi |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -353,13 +377,17 @@ OS->OurApp: Return file content or error
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | OS Dosya Okuma |
+| **Test Türü** | Entegrasyon Test |
+| **Test Domain** | Uygulama Sunucusu, İşletim Sistemi |
 | **Test Adı** | `TestReadFile` |
 | **Test Açıklama** | `ReadFile` fonksiyonunun dosya okuma işleminin doğru bir şekilde yapıldığını test etmek |
 | **Test Amacı** | Dosya okuma işleminin doğru bir şekilde yapılıp yapılmadığını kontrol etmek |
 | **Test Adımlar** | Çalışma dizininin yolu, dosya varlığının kontrol edilmesi, dosyanın okunması |
 | **Test Girdileri** | Dosya yolu, dosya adı |
 | **Test Çıktıları** | Dosya varlığının kontrol edilmesi, dosyanın okunması |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -397,13 +425,17 @@ func TestReadFile(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Uzak Önbellek Veri Yazma |
+| **Test Türü** | Entegrasyon Test |
+| **Test Domain** | Uygulama Sunucusu, Redis Bellek Sunucusu |
 | **Test Adı** | `TestNewRedisCacheSet` |
 | **Test Açıklama** | Redis ile bağlantı kurarak, veri set etme işleminin doğru bir şekilde yapıldığını test etmek |
 | **Test Amacı** | Redis ile bağlantının kurulup kurulmadığını kontrol etmek ve veri set etme işleminin doğru bir şekilde yapılıp yapılmadığını kontrol etmek |
 | **Test Adımlar** | Redis ile bağlantı kurulması, veri set etme işlemi |
 | **Test Girdileri** | Redis URL, key, value, expiration |
 | **Test Çıktıları** | Redis ile bağlantının kurulmuş olması, veri set etme işleminin başarıyla tamamlanmış olması |
-| **Test Ortamı** | |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
     
 ```go
@@ -430,13 +462,17 @@ func TestNewRedisCacheSet(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Uzak Önbellek Veri Okuma |
+| **Test Türü** | Entegrasyon Test |
+| **Test Domain** | Uygulama Sunucusu, Redis Bellek Sunucusu |
 | **Test Adı** | `TestNewRedisCacheGet` |
 | **Test Açıklama** | `NewRedisCacheConnection` servis metodunun doğru bir şekilde çalışıp çalışmadığını test etmek |
 | **Test Amacı** | `NewRedisCacheConnection` servis metodunun doğru bir şekilde çalışıp çalışmadığını test etmek |
 | **Test Adımlar** | Redis bağlantısı oluşturulur, anahtar değeri set edilir, anahtar değeri get edilir |
 | **Test Girdileri** | Redis bağlantı URL'si |
 | **Test Çıktıları** | Redis bağlantısı oluşturulur, anahtar değeri set edilir, anahtar değeri get edilir |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -477,14 +513,17 @@ func TestNewRedisCacheGet(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Uygulama Canlılığı |
+| **Test Türü** | Sistem Test |
+| **Test Domain** | Uygulama Sunucusu, Kullanıcı |
 | **Test Adı** | `TestApplicationLiveness` |
 | **Test Açıklama** | Uygulamanın "ping" adresine GET isteği göndererek, cevap olarak 200 status kodunun döndürülüp döndürülmediğini kontrol etmek |
 | **Test Amacı** | Uygulamanın canlı olduğunu doğrulamak |
 | **Test Adımları** | "ping" adresine GET isteği göndermek. Gelen cevap kodunu kontrol etmek |
 | **Test Girdileri** | "ping" adresi |
 | **Test Çıktıları** | 200 status kodu döndürülür |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -519,14 +558,17 @@ func TestApplicationLiveness(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Uygulama Dosya Yükleme |
+| **Test Türü** | Sistem Test |
+| **Test Domain** | Uygulama Sunucusu, Kullanıcı, Önbellek Servisi |
 | **Test Adı** | `TestUploadFileToServer` |
 | **Test Açıklama** | Sunucuya örnek bir dosya yüklemek |
 | **Test Amacı** | Sunucuya dosya yükleme işleminin doğru bir şekilde yapıldığını doğrulamak |
 | **Test Adımları** | Örnek dosyayı açmak ve içeriğini okumak İstek gövdesi için bir buffer oluşturmak. Yeni bir multipart yazar oluşturmak. "file" adı ile yeni bir form-data başlığı oluşturmak. İstekleri göndermek için http.Post fonksiyonunu kullanmak. Dosya yükleme sonucunu kontrol etmek |
 | **Test Girdileri** | Örnek bir dosya |
 | **Test Çıktıları** | Dosya yükleme işlemi başarılı olur |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -613,14 +655,17 @@ func TestUploadFileToServer(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Uygulama Dosya Getirme |
+| **Test Türü** | Sistem Test |
+| **Test Domain** | Uygulama Sunucusu, Kullanıcı, Önbellek Servisi |
 | **Test Adı** | `TestGetUploadedFile` |
 | **Test Açıklama** | Sunucudan yüklenen dosyanın indirilebilir olup olmadığını test etmek |
 | **Test Amacı** | Sunucudan yüklenen dosyanın indirilebilir olduğunu doğrulamak |
 | **Test Adımlar** | 1. Sunucudan yüklenen dosya için GET isteği göndermek <br> 2. Gelen cevap kodunu kontrol etmek |
 | **Test Girdileri** | Yüklenen dosya kodu |
 | **Test Çıktıları** | 200 status kodu döndürülür |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -658,14 +703,17 @@ func TestGetUploadedFile(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | Yüksek Boyutlu Dosya Yükleme |
+| **Test Türü** | Regresyon Test |
+| **Test Domain** | Uygulama Sunucusu, Kullanıcı, Önbellek Servisi |
 | **Test Adı** | `TestUploadLargeFileToServer` |
 | **Test Açıklama** | Sunucuya büyük dosya yükleme işleminin gerçekleşip gerçekleşmediğini test etmek |
 | **Test Amacı** | Sunucuya büyük dosya yükleme işleminin sınırlamalarını test etmek |
 | **Test Adımlar** | Sunucuya büyük dosya yükleme işlemi gerçekleştirilir |
 | **Test Girdileri** | Büyük dosya |
 | **Test Çıktıları** | 422 status kodu |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
-
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
@@ -728,13 +776,17 @@ func TestUploadLargeFileToServer(t *testing.T) {
 
 | - | Açıklama |
 | --- | --- |
+| **Test** | .exe Dosya Yükleme |
+| **Test Türü** | Regresyon Test |
+| **Test Domain** | Uygulama Sunucusu, Kullanıcı, Önbellek Servisi |
 | **Test Adı** | `TestUploadExeFileToServer` |
 | **Test Açıklama** | `.exe` dosyalarının server'a yüklenmesine izin verilmediği için, server tarafından beklenen bir hata mesajı döndürülür |
 | **Test Amacı** | Server'ın .exe dosyalarını yükleme işlemini doğru bir şekilde gerçekleştirip gerçekleştirmediğini test etmek |
 | **Test Adımlar** | 1. Server'ı başlatmak <br> 2. .exe dosyasını açmak <br> 3. Dosyayı server'a yükleme isteği göndermek <br> 4. Server'ın döndürdüğü cevap kodunu kontrol etmek |
 | **Test Girdileri** | .exe dosyası |
 | **Test Çıktıları** | Server tarafından beklenen bir hata mesajı döndürülür |
-| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD |
+| **Test Ortamı** | Mac M1 Pro - 16GB RAM - 512 SSD -- go-testing built-in library |
+| **Hata Yönetimi** | Servis metodunun hata döndürmesi durumunda test çıkış yapar ve onay dönmez |
 </pre>
 
 ```go
